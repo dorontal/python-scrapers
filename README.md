@@ -1,2 +1,2 @@
-# python-scrapers
-Python scraper base class and various Python scrapers derived from it
+# python_scrapers
+Various scrapers of data from the world wide web, written in Python
