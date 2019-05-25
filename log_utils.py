@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017 Doron Tal
 """
@@ -46,7 +46,7 @@ class LogUtilsError(Exception):
 # 1st argument to Logger(): the filename to which logging occurs
 # 2nd argument to Logger: the log level above which we do not log
 
-class Logger(object):
+class Logger():
     """
     Analyze video text to find entities (cards from the cards table)
     in it and return a list of entities per video as well as a score
@@ -95,8 +95,15 @@ class Logger(object):
 
         log_utils.propagate = False
 
-        log_level = eval("logging."+s_log_level.upper())
-        log_utils.setLevel(log_level)
+        log_level_dict = {
+            'DEBUG': logging.DEBUG,
+            'INFO': logging.INFO,
+            'WARNING': logging.WARNING,
+            'ERROR': logging.ERROR,
+            'CRITICAL': logging.CRITICAL
+        }
+
+        log_utils.setLevel(log_level_dict[s_log_level.upper()])
 
         handler = logging.handlers.RotatingFileHandler(
             s_log_filename,
@@ -154,7 +161,7 @@ def log_warning(log_obj, s_phrase):
     being None or not
     """
     if log_obj is None:
-        print s_phrase
+        print(s_phrase)
     else:
         log_obj.warning(s_phrase)
 
@@ -164,7 +171,7 @@ def log_info(log_obj, s_phrase):
     being None or not
     """
     if log_obj is None:
-        print s_phrase
+        print(s_phrase)
     else:
         log_obj.info(s_phrase)
 
@@ -174,7 +181,7 @@ def log_critical(log_obj, s_phrase):
     being None or not
     """
     if log_obj is None:
-        print s_phrase
+        print(s_phrase)
     else:
         log_obj.critical(s_phrase)
 
@@ -184,7 +191,7 @@ def log_error(log_obj, s_phrase):
     being None or not
     """
     if log_obj is None:
-        print s_phrase
+        print(s_phrase)
     else:
         log_obj.error(s_phrase)
 
@@ -194,7 +201,7 @@ def log_debug(log_obj, s_phrase):
     being None or not
     """
     if log_obj is None:
-        print s_phrase
+        print(s_phrase)
     else:
         log_obj.debug(s_phrase)
 
@@ -252,7 +259,7 @@ def get_log_line_components(s_line):
     return s_line, dtime, log_level
 
 
-class ReverseLogFileIterator(object):
+class ReverseLogFileIterator():
     """
     class to iterate through a log file from end to start, verifying
     that the last line is a warning line has an "END" in it and
@@ -276,7 +283,7 @@ class ReverseLogFileIterator(object):
         """
         return self
 
-    def next(self):
+    def __next__(self):
         """
         next..
         """
@@ -284,7 +291,7 @@ class ReverseLogFileIterator(object):
             raise StopIteration
 
         try:
-            s_line = self._iterator.next()
+            s_line = self._iterator.__next__()
         except StopIteration:
             if not self._b_started:
                 raise LogUtilsError("log file %s has no START directive!" %
@@ -300,9 +307,9 @@ class ReverseLogFileIterator(object):
             if len(s_message) < 3 or s_message[0:3] != "END":
                 raise LogUtilsError("Last line has no 'END'; file: %s" %
                                     (self._s_log_filename,))
-            else:
-                self._b_started = True
-                return s_message, dtime, log_level
+
+            self._b_started = True
+            return s_message, dtime, log_level
 
         # only on non 1st iteration do we get here, you should never find an
         # 'END' in the line again!
@@ -334,7 +341,8 @@ def verify_last_log_session(s_log_filename, log_obj=None):
     n_lines = 0
     dtime = None
     for s_line, dtime, s_log_type in ReverseLogFileIterator(s_log_filename):
-        assert len(s_line) > 0
+        s_line_len = len(s_line) > 0
+        assert s_line_len > 0
         if s_log_type == "E":
             n_errors += 1
         elif s_log_type == "C":

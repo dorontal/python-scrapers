@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017 Doron Tal
 """
@@ -9,7 +9,7 @@ import unittest
 
 BUFFER_SIZE = 64*1024
 
-class ReverseFileIterator(object):
+class ReverseFileIterator():
     """
     Class containing some file utilities as methods
     """
@@ -23,18 +23,37 @@ class ReverseFileIterator(object):
         self._leftover = None
         self._l_lines = []
 
+    def __del__(self):
+        self._h_file.close()
+
     def __iter__(self):
         """
         part of allowing this class's objects to also be used as iterators
         """
         return self
 
+    def __next__(self):
+        """
+        next..
+        """
+        n_lines = len(self._l_lines)
+
+        if n_lines == 0:
+            self._read_next_batch()
+
+        n_lines = len(self._l_lines)
+        assert n_lines > 0
+
+        return self._l_lines.pop()
+
     def _read_next_batch(self):
         """
         this object is made an iterator for going through freebase results
         """
+        n_lines = len(self._l_lines)
+        assert n_lines == 0
+
         if self._position > 0:
-            assert len(self._l_lines) == 0
             size = min(self._position, BUFFER_SIZE)
             self._position -= size
             self._h_file.seek(self._position)
@@ -55,16 +74,6 @@ class ReverseFileIterator(object):
         else:
             raise StopIteration
 
-    def next(self):
-        """
-        next..
-        """
-        if len(self._l_lines) == 0:
-            self._read_next_batch()
-
-        assert len(self._l_lines) > 0
-        return self._l_lines.pop()
-
     def all(self):
         """
         runs next() over and over until the end
@@ -82,7 +91,7 @@ class ModuleTests(unittest.TestCase):
         """
         s_filename = "/etc/passwd"
         for s_line in ReverseFileIterator(s_filename):
-            print s_line
+            print(s_line)
 
 
 if __name__ == '__main__':
