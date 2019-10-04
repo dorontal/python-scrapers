@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017 Doron Tal
 """
@@ -8,7 +8,8 @@ scraper_base - abstract scraper base class definition and scraping utilities
 import abc
 import sys
 import unittest
-import urllib2
+# import urllib2
+from urllib import request
 import time
 import re
 from bs4 import BeautifulSoup
@@ -24,6 +25,9 @@ MAX_RETRIES = 10
 # delay, in seconds, as a float
 RETRY_DELAY_SECONDS = 1.0
 
+
+AP_TOP_HEADLINES_URL = "http://hosted2.ap.org/atom/APDEFAULT/" + \
+                       "3d281c11a96b4ad082fe88aa0db04305"
 
 class ScraperBase:
     """
@@ -124,10 +128,12 @@ class ScraperBase:
             }
 
         # create a request object for the URL
-        request = urllib2.Request(s_url, headers=d_headers)
+        # request = urllib2.Request(s_url, headers=d_headers)
+        req = request.Request(s_url, headers=d_headers)
 
         # create an opener object
-        opener = urllib2.build_opener()
+        # opener = urllib2.build_opener()
+        opener = request.build_opener()
 
         # open a connection and receive the http response headers + contents
         b_noanswer = True
@@ -137,14 +143,16 @@ class ScraperBase:
         code = None
         while b_noanswer and n_tries < self._max_retries:
             try:
-                response = opener.open(request)
+                response = opener.open(req)
+
                 self._last_scraped_url = s_url
                 b_noanswer = False
                 # return values
                 contents = response.read()
                 headers = response.headers
                 code = response.code
-            except (urllib2.HTTPError, urllib2.URLError) as ex:
+            # except (urllib2.HTTPError, urllib2.URLError) as ex:
+            except (request.HTTPError, urllib2.URLError) as ex:
                 s_message = "Cannot open %s\n%s\nretrying in %2.2f s\n" % \
                             (s_url, str(ex), self._retry_delay_seconds)
                 sys.stderr.write(s_message+"\n")
@@ -175,7 +183,7 @@ class ScraperBase:
         html table extracted from soup 'soup' (specifically, using zero
         indexing, table 'i_table' of all the tables detected in 'soup')
         """
-        soup = BeautifulSoup(s_html)
+        soup = BeautifulSoup(s_html, features="html.parser")
         tables = soup('table')
         table = tables[i_table]
         l_text_rows = []
@@ -210,7 +218,7 @@ class ModuleTests(unittest.TestCase):
                 s_url = "http://biz.yahoo.com/c/e.html"
                 s_html = self.fetch_html(s_url)[0]
 
-                return self.get_table_from_html(s_html, 2)
+                return self.get_table_from_html(s_html, 0)
 
         sobj = YahooCalendarScraper()
         sobj.scrape()
@@ -228,10 +236,8 @@ class ModuleTests(unittest.TestCase):
                 """
                 the abstract method implementation - does all the scraping work
                 """
-                s_url = "http://hosted.ap.org/lineups/"+\
-                        "TOPHEADS-rss_2.0.xml?SITE=AZTUS&SECTION=HOME"
-                feed = self.fetch_rss(s_url)
-
+                feed = self.fetch_rss(AP_TOP_HEADLINES_URL)
+                print(len(feed.entries))
                 return [post.title for post in feed.entries]
 
         sobj = AssociatedPressScraper()
