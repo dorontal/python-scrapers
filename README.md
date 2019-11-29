@@ -1,8 +1,8 @@
 # python_scrapers
-Various scrapers of data from the world wide web, written in Python
 
-## THIS REPOSITORY IS BROKEN, IT IS IN THE PROCESS OF BEING CONVERTED TO PYTHON3
+News headline scrapers from RSS feeds, written in Python.
 
-### TODO
-* converted `file_utils.py` and `log_utils.py` to python3, convert all others.
-* https://www.uen.org/feeds/lists.shtml
+Each Python file has unit test code that also shows an example usage, but it's pretty simple. Just running a <scraper>.py file prints a list of scraped headlines.
+
+Found some links to rss feed urls in
+[this article](https://www.uen.org/feeds/lists.shtml).
