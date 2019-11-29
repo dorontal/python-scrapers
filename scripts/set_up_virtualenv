@@ -25,6 +25,10 @@ if [ ! -d "env" ]; then
 
     . env/bin/activate
 
+    # wheel is required otherwise there's a dependency issue
+    # (e.g. see stackoverflow.com/questions/34819221)
+    pip3 install wheel
+    
     pip3 install feedparser
     pip3 install requests
     pip3 install BeautifulSoup4
