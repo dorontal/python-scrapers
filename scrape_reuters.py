@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-scrape_bbc.py - scrape BBC's RSS site for news headlines
+scrape_reuters.py - scrape REUTERS's RSS site for news headlines
 """
 
 import unittest
@@ -18,8 +18,7 @@ class ScrapeWashingtonPost(ScraperBase):
         """
         abstract method implementation - does all the scraping work
         """
-        s_url = "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/" + \
-            "americas/rss.xml"
+        s_url = "http://feeds.reuters.com/reuters/topNews"
 
         feed = self.fetch_rss(s_url)
 
@@ -35,7 +34,7 @@ class ModuleTests(unittest.TestCase):
         """
         tests class derivation and scraping
         """
-        sobj = ScrapeWashingtonPost("scrape_bbc.log", "DEBUG")
+        sobj = ScrapeWashingtonPost("scrape_reuters.log", "DEBUG")
         pprint(sobj.scrape())
 
 
