@@ -11,7 +11,7 @@ from scraper_base import ScraperBase
 
 class ScrapeCNN(ScraperBase):
     """
-    scraper for Associated Press news titles RSS feed
+    scrape CNN's RSS site for news headlines
     """
     def scrape_worker(self):
         """

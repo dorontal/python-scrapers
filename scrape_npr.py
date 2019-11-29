@@ -10,9 +10,9 @@ from pprint import pprint
 from scraper_base import ScraperBase
 
 
-class ScrapeWashingtonPost(ScraperBase):
+class ScrapeNPR(ScraperBase):
     """
-    scraper for Associated Press news titles RSS feed
+    scrape NPR's RSS site for news headlines
     """
     def scrape_worker(self):
         """
@@ -34,7 +34,7 @@ class ModuleTests(unittest.TestCase):
         """
         tests class derivation and scraping
         """
-        sobj = ScrapeWashingtonPost("scrape_npr.log", "DEBUG")
+        sobj = ScrapeNPR("scrape_npr.log", "DEBUG")
         pprint(sobj.scrape())
 
 

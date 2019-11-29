@@ -12,7 +12,7 @@ from scraper_base import ScraperBase
 
 class ScrapeNYT(ScraperBase):
     """
-    scraper for Associated Press news titles RSS feed
+    scrape the New York Times's rss site for news headlines
     """
     def scrape_worker(self):
         """

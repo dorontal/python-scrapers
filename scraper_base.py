@@ -25,8 +25,8 @@ MAX_RETRIES = 10
 RETRY_DELAY_SECONDS = 1.0
 
 
-AP_TOP_HEADLINES_URL = "http://hosted2.ap.org/atom/APDEFAULT/" + \
-                       "3d281c11a96b4ad082fe88aa0db04305"
+NYT_TOP_HEADLINES_URL = \
+    "http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"
 
 class ScraperBase:
     """
@@ -216,7 +216,8 @@ class ModuleTests(unittest.TestCase):
                 """
                 s_url = "http://biz.yahoo.com/c/e.html"
                 s_html = self.fetch_html(s_url)[0]
-
+                table = self.get_table_from_html(s_html, 0)
+                print('yahoo-calendar-len:', len(table))
                 return self.get_table_from_html(s_html, 0)
 
         sobj = YahooCalendarScraper()
@@ -227,7 +228,7 @@ class ModuleTests(unittest.TestCase):
         """
         tests class derivation and basic scraping usage for rss
         """
-        class AssociatedPressScraper(ScraperBase):
+        class NYTScraper(ScraperBase):
             """
             current yahoo calendar scraper class
             """
@@ -235,11 +236,11 @@ class ModuleTests(unittest.TestCase):
                 """
                 the abstract method implementation - does all the scraping work
                 """
-                feed = self.fetch_rss(AP_TOP_HEADLINES_URL)
-                print(len(feed.entries))
+                feed = self.fetch_rss(NYT_TOP_HEADLINES_URL)
+                print('# of NYT titles:', len(feed.entries))
                 return [post.title for post in feed.entries]
 
-        sobj = AssociatedPressScraper()
+        sobj = NYTScraper()
         sobj.scrape()
 
 

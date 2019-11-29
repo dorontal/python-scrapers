@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-scrape_usatoday.py - scrape USATODAY's RSS site for news headlines
+scrape_usatoday.py - scrape USA Today's RSS site for news headlines
 """
 
 import unittest
@@ -10,9 +10,9 @@ from pprint import pprint
 from scraper_base import ScraperBase
 
 
-class ScrapeWashingtonPost(ScraperBase):
+class ScrapeUSAToday(ScraperBase):
     """
-    scraper for Associated Press news titles RSS feed
+    scrape USA Today's RSS site for news headlines
     """
     def scrape_worker(self):
         """
@@ -34,7 +34,7 @@ class ModuleTests(unittest.TestCase):
         """
         tests class derivation and scraping
         """
-        sobj = ScrapeWashingtonPost("scrape_usatoday.log", "DEBUG")
+        sobj = ScrapeUSAToday("scrape_usatoday.log", "DEBUG")
         pprint(sobj.scrape())
 
 
