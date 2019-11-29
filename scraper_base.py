@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright (C) 2017 Doron Tal
 """
 scraper_base - abstract scraper base class definition and scraping utilities
 """

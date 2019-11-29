@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright (C) 2017 Doron Tal
 """
-scrape_nyt.py - scrape the New York Times's website for news headlines
+scrape_nyt.py - scrape the New York Times's rss site for news headlines
 """
 
 

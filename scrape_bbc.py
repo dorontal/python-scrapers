@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
-scrape_cnn.py - scrape CNN's RSS site for news headlines
+scrape_bbc.py - scrape BBC's RSS site for news headlines
 """
 
 import unittest
@@ -9,7 +10,7 @@ from pprint import pprint
 from scraper_base import ScraperBase
 
 
-class ScrapeCNN(ScraperBase):
+class ScrapeWashingtonPost(ScraperBase):
     """
     scraper for Associated Press news titles RSS feed
     """
@@ -17,7 +18,9 @@ class ScrapeCNN(ScraperBase):
         """
         abstract method implementation - does all the scraping work
         """
-        s_url = "http://rss.cnn.com/rss/cnn_topstories.rss"
+        s_url = "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/" + \
+            "americas/rss.xml"
+
         feed = self.fetch_rss(s_url)
 
         return [post.title for post in feed.entries]
@@ -32,7 +35,7 @@ class ModuleTests(unittest.TestCase):
         """
         tests class derivation and scraping
         """
-        sobj = ScrapeCNN("scrape_cnn.log", "DEBUG")
+        sobj = ScrapeWashingtonPost("scrape_washington_post.log", "DEBUG")
         pprint(sobj.scrape())
 
 
